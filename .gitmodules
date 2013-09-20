@@ -1,0 +1,9 @@
+[submodule "pkg_terebinth/packages/com_terebinth"]
+	path = pkg_terebinth/packages/com_terebinth
+	url = git@github.com:nwheeler/com_terebinth.git
+[submodule "pkg_terebinth/packages/plg_content_terebinth"]
+	path = pkg_terebinth/packages/plg_content_terebinth
+	url = git@github.com:nwheeler/plg_content_terebinth.git
+[submodule "pkg_terebinth/packages/plg_system_terebinth"]
+	path = pkg_terebinth/packages/plg_system_terebinth
+	url = git@github.com:nwheeler/plg_system_terebinth.git
