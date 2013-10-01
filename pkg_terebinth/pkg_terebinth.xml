@@ -12,5 +12,6 @@
    <file type="component" id="com_terebinth" >com_terebinth.zip</file>
    <file type="plugin" id="terebinth" group="content">plg_content_terebinth.zip</file>
    <file type="plugin" id="terebinth" group="system">plg_system_terebinth.zip</file>
+   <file type="plugin" id="terebinth" group="user">plg_user_terebinth.zip</file>
  </files>
  </extension>
