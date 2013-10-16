@@ -5,13 +5,12 @@
  <creationDate>September 2013</creationDate>
  <license>GNU General Public License version 2 or later</license>
  <packagename>terebinth</packagename>
- <version>0.0.1</version>
+ <version>0.0.2</version>
  <packager>Nicholas Wheeler</packager>
  <description>Terebinth content component and plugins</description>
  <files folder="packages">
    <file type="component" id="com_terebinth" >com_terebinth.zip</file>
    <file type="plugin" id="terebinth" group="content">plg_content_terebinth.zip</file>
-   <file type="plugin" id="terebinth" group="system">plg_system_terebinth.zip</file>
    <file type="plugin" id="terebinth" group="user">plg_user_terebinth.zip</file>
  </files>
  </extension>
