@@ -1,24 +1,10 @@
-// Requirements to use this configuration (with minor tweaks):
-// Varnish 3.0.4
-// libvmod-header https://github.com/varnish/libvmod-header
-// Apache running Joomla! on port 8888
-// Joomla 2.5
-// Terebinth Extension (with user plugin enabled, the default)
-// Login page/activities at either "/login" or "/components/users".
-// 
-// If you're running HTTPS in Apache, and ProxyPassing the traffic to Varnish
-// In the HTTPS VirtualHost include this line:
-//     RequestHeader set X-Forwarded-Proto https
-// In the 8888 (Joomla!) VirtualHost, include this line:
-//     SetEnvIfNocase X-Forwarded-Proto https HTTPS=on
-// The above two things allows Apache to set the proper environment variable for 
-// Joomla to pay attention to. As well, it allows this VCL to cache "SSL pages" uniquely
-// from non-ssl pages.
+import header;
+
+// See: https://www.terebinth.info/configurations/configuration-https-and-http
 
 // (http) origin. This is pointing to the VirtualHost running on port 8888.
 // It sets up a probe for this backend, allowing us to serve stale cache if the
 // backend becomes unresponsive. Be sure to have the correct .host_header.
-
 backend origin {
     .host   =   "127.0.0.1";
     .host_header   = "www.terebinth.info";
@@ -31,9 +17,6 @@ backend origin {
         .threshold  =   3;
     }
 }
-
-import header;
-
 
 // This ACL control permissions for BAN and PURGE operations.
 acl purge {
@@ -177,7 +160,7 @@ sub vcl_recv {
     // If your login page is not at "/login", change the below line. This statement is primarily so a user will get a unique
     // session cookie if they visit the administrator section, or the login section. You can't log into Joomla without having 
     // a valid session cookie to begin with.
-    if (req.url ~ "^/login" || req.url ~ "^/administrator" || req.url ~ "^/component/users" )
+    if (req.url ~ "^/login" || req.url ~ "^/administrator")
     {
         return (pass);
     }
@@ -269,11 +252,17 @@ sub vcl_fetch {
     // Don't cache the login page, 'cause we always want to send the (new) proper session cookie when a user wants to login.
     // A user must have a valid session cookie before authenticating, so when they receive the login page, they should also 
     // receive the set-cookie directive with their (valid) session id.
-    if ( req.url ~ "^/login" || req.url ~ "^/component/users" )
+    if ( req.url ~ "^/login" )
     {
         return (hit_for_pass);
     }
 
+    // only cache responses that are HTTP 200 or 404s
+    // Pass on caching objects whose response is not 200 and not 404.
+    if ( beresp.status != 200 && beresp.status != 404 )
+    {
+        return (hit_for_pass);
+    }
 
     // We'll only unset Set-Cookie if it's just trying to set the Joomla session cookie. Otherwise, it's probably some
     // extension trying to set a cookie. We'll allow that. It's important to point out that logging in and logging off activities
@@ -304,13 +293,6 @@ sub vcl_fetch {
     if (beresp.status == 301 || beresp.status == 302)
     {
         set beresp.http.Location = regsub(beresp.http.Location, ":[0-9]+", "");
-    }
-
-    // only cache responses that are HTTP 200 or 404s
-    // Pass on caching objects whose response is not 200 and not 404.
-    if ( beresp.status != 200 && beresp.status != 404 )
-    {
-        return (hit_for_pass);
     }
 
     // unset the etag header.
@@ -358,4 +340,3 @@ sub vcl_deliver {
     unset resp.http.Pragma;
     unset resp.http.X-Content-Encoded-By;
 }
-
