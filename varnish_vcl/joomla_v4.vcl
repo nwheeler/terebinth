@@ -124,7 +124,7 @@ sub vcl_recv {
         set req.url = regsub(req.url, "\?$", "");
     }
 
-    // Strip hash, server doesn't need it.
+    // Strip hash, server does not need it.
     if (req.url ~ "\#") {
         set req.url = regsub(req.url, "\#.*$", "");
     }
@@ -166,7 +166,7 @@ sub vcl_recv {
     }
 
     // If your login page is not at "/login", change the below line. This statement is primarily so a user will get a unique
-    // session cookie if they visit the administrator section, or the login section. You can't log into Joomla without having 
+    // session cookie if they visit the administrator section, or the login section. You cannot log into Joomla without having 
     // a valid session cookie to begin with.
     if (req.url ~ "^/login" || req.url ~ "^/administrator")
     {
@@ -198,10 +198,10 @@ sub vcl_recv {
         unset req.http.cookie;
     }
 
-    // If you're not logged in, throw away the session cookie.
+    // If you are not logged in, throw away the session cookie.
     if (!(req.http.cookie ~ "loggedin"))
     {
-        // strip joomla's md5=md5 session cookie.
+        // strip joomla md5=md5 session cookie.
         set req.http.Cookie = regsub(req.http.Cookie, "[0-9a-f]{32}=[0-9a-f]{32}", "");
     }
 
@@ -215,7 +215,7 @@ sub vcl_recv {
     //    set req.grace = 1h;
     //}
 
-    // we've gotten this far! woohoo! lookup from cache!
+    // we have gotten this far! woohoo! lookup from cache!
     return (hash);
 }
 
@@ -247,7 +247,7 @@ sub vcl_backend_response {
         return (deliver);
     }
 
-    // If backend says don't cache, don't cache, man. Respect.
+    // If backend says do not cache, do not cache, man. Respect.
     if ( beresp.http.Cache-Control ~ "private")
     {
         set beresp.uncacheable = true;
@@ -255,7 +255,7 @@ sub vcl_backend_response {
         return (deliver);
     }
 
-    // If it is an /administrator url, don't cache it.
+    // If it is an /administrator url, do not cache it.
     if ( bereq.url ~ "^/administrator" )
     {
         set beresp.uncacheable = true;
@@ -263,7 +263,7 @@ sub vcl_backend_response {
         return (deliver);
     }
 
-    // Don't cache the login page, 'cause we always want to send the (new) proper session cookie when a user wants to login.
+    // Do not cache the login page, because we always want to send the (new) proper session cookie when a user wants to login.
     // A user must have a valid session cookie before authenticating, so when they receive the login page, they should also 
     // receive the set-cookie directive with their (valid) session id.
     if ( bereq.url ~ "^/login" )
@@ -282,8 +282,8 @@ sub vcl_backend_response {
         return (deliver);
     }
 
-    // We'll only unset Set-Cookie if it is just trying to set the Joomla session cookie. Otherwise, it is probably some
-    // extension trying to set a cookie. We'll allow that. It's important to point out that logging in and logging off activities
+    // We will only unset Set-Cookie if it is just trying to set the Joomla session cookie. Otherwise, it is probably some
+    // extension trying to set a cookie. We will allow that. It is important to point out that logging in and logging off activities
     // likely will only work from the "/login" page.
 
     // required: https://github.com/varnish/libvmod-header
@@ -302,7 +302,7 @@ sub vcl_backend_response {
         return (retry);
     }
 
-    // Sometimes, a 301 or 302 redirect formed via Apache's mod_rewrite can mess with the HTTP port that is being passed along.
+    // Sometimes, a 301 or 302 redirect formed via Apaches mod_rewrite can mess with the HTTP port that is being passed along.
     // This often happens with simple rewrite rules in a scenario where Varnish runs on :80 and Apache on :8080 on the same box.
     // A redirect can then often redirect the end-user to a URL on :8080, where it should be :80.
     // This may need finetuning on your setup.
