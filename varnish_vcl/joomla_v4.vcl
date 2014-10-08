@@ -32,7 +32,7 @@ acl purge {
 }
 
 // This method sets up what is hashed to identify a unique object. It is made out of
-// the request url, the host or server ip, and if it's not static, the x-forwarded-proto
+// the request url, the host or server ip, and if it is not static, the x-forwarded-proto
 // header. As well, if the user is logged in, it hashes their cookie.
 sub vcl_hash {
     hash_data(req.url);
@@ -41,7 +41,7 @@ sub vcl_hash {
     } else {
         hash_data(server.ip);
     }
-    // If it's not a static resource, include X-Forwarded-Proto in the hash (if it exists).
+    // If it is not a static resource, include X-Forwarded-Proto in the hash (if it exists).
     // This makes dynamic content unique for ssl vs non-ssl
     if (!(req.url ~ "^[^?]*\.(bmp|bz2|css|doc|eot|flv|gif|gz|ico|jpeg|jpg|js|less|mp[34]|pdf|png|rar|rtf|swf|tar|tgz|txt|wav|woff|xml|zip)(\?.*)?$"))
     {
@@ -80,7 +80,7 @@ sub vcl_recv {
         if (!client.ip ~ purge) {
             return (synth(405, "Not allowed."));
         }
-        // Okay, this used to be PURGE, but ban works better. Still, it's an HTTP PURGE request ;).
+        // Okay, this used to be PURGE, but ban works better. Still, it is an HTTP PURGE request ;).
         // The Terebinth content plugin makes use of this.
         ban("req.url == "+req.url);
         return (synth(200, "Purged "+req.url+" from cache."));
@@ -159,7 +159,7 @@ sub vcl_recv {
         return (hash);
     }
 
-    // If it's a POST request, or part of component/banners, pass to backend.
+    // If it is a POST request, or part of component/banners, pass to backend.
     if(req.url ~ "^/component/banners" || req.method == "POST")
     {
         return (pass);
@@ -239,7 +239,7 @@ sub vcl_pipe {
 // caching more effective.
 sub vcl_backend_response {
 
-    // If it's a POST, hit_for_pass.
+    // If it is a POST, hit_for_pass.
     if (bereq.method == "POST")
     {
         set beresp.uncacheable = true;
@@ -255,7 +255,7 @@ sub vcl_backend_response {
         return (deliver);
     }
 
-    // If it's an /administrator url, don't cache it.
+    // If it is an /administrator url, don't cache it.
     if ( bereq.url ~ "^/administrator" )
     {
         set beresp.uncacheable = true;
@@ -282,7 +282,7 @@ sub vcl_backend_response {
         return (deliver);
     }
 
-    // We'll only unset Set-Cookie if it's just trying to set the Joomla session cookie. Otherwise, it's probably some
+    // We'll only unset Set-Cookie if it is just trying to set the Joomla session cookie. Otherwise, it is probably some
     // extension trying to set a cookie. We'll allow that. It's important to point out that logging in and logging off activities
     // likely will only work from the "/login" page.
 
