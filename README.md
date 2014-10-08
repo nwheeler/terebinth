@@ -1,7 +1,7 @@
 Terebinth
 ==============
 
-This package (Joomla! 2.5 Extension) seeks to support Varnish a little better when used as a reverse caching proxy server in front of Joomla!
+This package (Joomla! 3.x Extension) seeks to support Varnish a little better when used as a reverse caching proxy server in front of Joomla!
 
 Purpose
 ==============
@@ -25,7 +25,6 @@ Download and assemble
 1. Run build.sh to package up all the things.
 1. The result will be "pkg_terebinth.zip"
 
-Alternatively, you can use the "pkg_terebinth.zip" found in this repository. It's probably up to date.
 
 Install
 ==============
@@ -38,8 +37,7 @@ Varnish Server Configuration
 The default server is a localhost varnish server on the default port.
 
 1. Components -> Terebinth
-1. Select and delete the default server.
-1. Add a new one, fill out the appropriate details.
+1. Select and edit the default server as appropriate for your environment.
 
 Uninstall
 ==============
