@@ -3,6 +3,8 @@ Terebinth
 
 This package (Joomla! 3.x Extension) seeks to support Varnish a little better when used as a reverse caching proxy server in front of Joomla!
 
+If you are looking for the Joomla! 2.5 version, check out the "joomla-2.5" branch.
+
 Purpose
 ==============
 
