@@ -9,7 +9,7 @@
  <packager>Nicholas Wheeler</packager>
  <description>Terebinth content component and plugins</description>
  <updateservers>
-     <server type="extension" priority="1" name="Terebinth Updates">http://www.terebinth.info/files/terebinth_extension.xml</server>
+     <server type="collection" priority="1" name="terebinth">http://www.terebinth.info/files/terebinth_list.xml</server>
  </updateservers>
  <files folder="packages">
    <file type="component" id="com_terebinth" >com_terebinth.zip</file>
