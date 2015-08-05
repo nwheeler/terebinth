@@ -5,7 +5,7 @@
  <creationDate>September 2013</creationDate>
  <license>GNU General Public License version 2 or later</license>
  <packagename>terebinth</packagename>
- <version>0.0.2</version>
+ <version>0.0.7</version>
  <packager>Nicholas Wheeler</packager>
  <description>Terebinth content component and plugins</description>
  <updateservers>
